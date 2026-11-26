@@ -1,0 +1,22 @@
+rules:
+  - id: path-traversal-from-input
+    languages: [python]
+    severity: ERROR
+    message: User input reaches a file path without validation
+    metadata:
+      confidence: HIGH
+    mode: taint
+    pattern-sources:
+      - pattern: input(...)
+    pattern-sinks:
+      - patterns:
+          - pattern: open($PATH, ...)
+          - focus-metavariable: $PATH
+
+  - id: unvalidated-age-input
+    languages: [python]
+    severity: WARNING
+    message: User age is accepted without checking for negative values.
+    metadata:
+      confidence: MEDIUM
+    pattern: $AGE = int(input(...))
